@@ -1,6 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import Layout from "../../components/layout"
+import "../styles.component2.scss"
 
 export default function SubComponent1() {
   return( 

@@ -33,6 +33,9 @@ export default function Home() {
           <a href="./Component1" className="card">
             <h3>Nav to Component1 &rarr;</h3>
           </a>
+          <Link href="./Component2" className="card">
+            <a className="card"><h3>Nav to Component2 &rarr;</h3></a>
+          </Link>
           <Link href="./subComponent1/subComponent1Page" className="card">
             <a className="card"><h3>Nav to SubComponent1 &rarr;</h3></a>
           </Link>

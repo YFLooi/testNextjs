@@ -1,6 +1,6 @@
 This is a starter template for [Learn Next.js](https://nextjs.org/learn).
 
-Start up by running "npm run dev"
+Start up by running "yarn run dev". This starts the "dev" script in package.json
 
 To change the localhost port, go to package.json and set the following:
 "scripts": {
