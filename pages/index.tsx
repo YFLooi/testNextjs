@@ -1,23 +1,32 @@
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 import { Header } from "../components/sharedComponents/Header";
 import { Footer } from "../components/sharedComponents/Footer";
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation, i18n } from "next-i18next";
 // Reads the .md files in /root/posts
-import { getSortedPostsData } from '../lib/posts'
+import { getSortedPostsData } from "../lib/posts";
+import { GetStaticProps } from "next";
 
 // allPostsData here is a prop with data to render a list of all files in /root/posts
-export default function Home({allPostsData}) {
-  const router = useRouter()
-  const { t } = useTranslation('common')
+// It is an array of objects, with each object having the props date, title, and id
+export default function Home({
+  allPostsData,
+}: {
+  allPostsData: {
+    date: string;
+    title: string;
+    id: string;
+  }[];
+}) {
+  const router = useRouter();
+  const { t } = useTranslation("common");
 
   return (
     <>
-      <Header heading={t("header__heading-text")} title={t("header__title")}/>
+      <Header heading={t("header__heading-text")} title={t("header__title")} />
       <div className="container">
-
         {/* 
         //Defining head here will only change the <head> of this page
         <Head>
@@ -31,23 +40,30 @@ export default function Home({allPostsData}) {
             Welcome to <a href="https://nextjs.org">Next.js!</a>
           </h1>
           <h2>{t("header__title")}</h2>
-          
-
           <p className="description">
             Get started by editing <code>pages/index.js</code>
           </p>
-
-          <button onClick={() => {console.log(i18n.language)}}>Log current i18n language</button>
-          Read {" "} {/**Adds empty space */}
+          <button
+            onClick={() => {
+              console.log(i18n.language);
+            }}
+          >
+            Log current i18n language
+          </button>
+          Read {/**Adds empty space */}
           <div className="grid">
             <a href="/Component1" className="card">
               <h3>Nav to Component1 &rarr;</h3>
             </a>
             <Link href="/Component2" className="card">
-              <a className="card"><h3>Nav to Component2 &rarr;</h3></a>
+              <a className="card">
+                <h3>Nav to Component2 &rarr;</h3>
+              </a>
             </Link>
             <Link href="/subComponent1/subComponent1Page" className="card">
-              <a className="card"><h3>Nav to SubComponent1 &rarr;</h3></a>
+              <a className="card">
+                <h3>Nav to SubComponent1 &rarr;</h3>
+              </a>
             </Link>
 
             <a href="https://nextjs.org/docs" className="card">
@@ -99,10 +115,8 @@ export default function Home({allPostsData}) {
               </ul>
             </section>
           </div>
-
-          <Footer/>
+          <Footer />
         </main>
-        
 
         <style jsx>{`
           .container {
@@ -251,22 +265,22 @@ export default function Home({allPostsData}) {
         `}</style>
       </div>
     </>
-  )
+  );
 }
 
 // getStaticProps gets our translations from the server-side
 // "common" refers to common.json in each locale. The same goes for "footer"
 // Interestingly, "footer.json" gets passed into <Footer/>, despite no deliberate assignment!
-export const getStaticProps = async ({ locale }) => {  
-  const allPostsData = getSortedPostsData()
+export const getStaticProps : GetStaticProps = async ({ locale }) => {
+  const allPostsData = getSortedPostsData();
 
   return {
     props: {
-      ...await serverSideTranslations(locale, ['common', "footer"]),
-      allPostsData // This is passed to Home() component as a prop
+      ...(await serverSideTranslations(locale, ["common", "footer"])),
+      allPostsData, // This is passed to Home() component as a prop
     },
-  }
-}
+  };
+};
 
 // This way of writing getStaticProps is suitable if only one prop needs to be returned
 // export const getStaticProps = async ({ locale }) => ({
@@ -274,4 +288,3 @@ export const getStaticProps = async ({ locale }) => {
 //     ...await serverSideTranslations(locale, ['common', "footer"]),
 //   },
 // })
-
