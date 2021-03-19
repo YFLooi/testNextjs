@@ -5,8 +5,11 @@ import { Header } from "../components/sharedComponents/Header";
 import { Footer } from "../components/sharedComponents/Footer";
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation, i18n } from "next-i18next";
+// Reads the .md files in /root/posts
+import { getSortedPostsData } from '../lib/posts'
 
-export default function Home() {
+// allPostsData here is a prop with data to render a list of all files in /root/posts
+export default function Home({allPostsData}) {
   const router = useRouter()
   const { t } = useTranslation('common')
 
@@ -79,11 +82,28 @@ export default function Home() {
                 Instantly deploy your Next.js site to a public URL with Vercel.
               </p>
             </a>
+
+            {/* Add this <section> tag below the existing <section> tag */}
+            <section className="markdownDocDisplay">
+              <h2>Blog</h2>
+              <ul>
+                {allPostsData.map(({ id, date, title }) => (
+                  <li key={id}>
+                    {title}
+                    <br />
+                    {id}
+                    <br />
+                    {date}
+                  </li>
+                ))}
+              </ul>
+            </section>
           </div>
 
           <Footer/>
         </main>
         
+
         <style jsx>{`
           .container {
             min-height: 100vh;
@@ -237,8 +257,21 @@ export default function Home() {
 // getStaticProps gets our translations from the server-side
 // "common" refers to common.json in each locale. The same goes for "footer"
 // Interestingly, "footer.json" gets passed into <Footer/>, despite no deliberate assignment!
-export const getStaticProps = async ({ locale }) => ({
-  props: {
-    ...await serverSideTranslations(locale, ['common', "footer"]),
-  },
-})
+export const getStaticProps = async ({ locale }) => {  
+  const allPostsData = getSortedPostsData()
+
+  return {
+    props: {
+      ...await serverSideTranslations(locale, ['common', "footer"]),
+      allPostsData // This is passed to Home() component as a prop
+    },
+  }
+}
+
+// This way of writing getStaticProps is suitable if only one prop needs to be returned
+// export const getStaticProps = async ({ locale }) => ({
+//   props: {
+//     ...await serverSideTranslations(locale, ['common', "footer"]),
+//   },
+// })
+

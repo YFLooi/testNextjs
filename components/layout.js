@@ -1,4 +1,4 @@
-// To use the CSS "container" class defined in layout.modue.css 
+// To use the CSS "container" class defined in layout.module.css 
 // inside components/layout.js, you need to:
 //     Import the CSS file and assign a name to it, like styles
 //     Use styles.container as the className
@@ -18,7 +18,7 @@ export const siteTitle = 'Next.js Sample Website'
 // }
 
 /**
- * 
+ * Reuseable head of our blog app
  * @param {*} param0 
  * "home" used to trigger conditions that adjust size of title and image
  * "children" refers to the return() content of the component wrapped by Layout
